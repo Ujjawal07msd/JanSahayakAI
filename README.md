@@ -179,3 +179,4 @@ docker run -p 8000:8000 -e GEMINI_API_KEY="your_api_key" janshayak
 
 ## License
 MIT License. Open for public and educational use.
+
