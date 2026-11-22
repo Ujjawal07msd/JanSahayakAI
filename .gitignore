@@ -1,0 +1,13 @@
+.env
+jansahayak-env/
+venv/
+.venv/
+__pycache__/
+*.pyc
+desktop.ini
+.DS_Store
+data/raw/
+data/processed/
+data/labels.csv
+data/classifier_model.pkl
+data/classifier_vectorizer.pkl
