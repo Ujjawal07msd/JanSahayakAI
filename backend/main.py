@@ -19,10 +19,10 @@ from rank_bm25 import BM25Okapi
 from dotenv import load_dotenv
 import google.generativeai as genai
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
 # ============================================================
@@ -158,6 +158,19 @@ ANSWER:"""
 
 
 @app.get("/")
+def root(request: Request):
+    """Serves the frontend UI to browser visitors, or JSON to API clients."""
+    accept_header = request.headers.get("accept", "")
+    if "application/json" in accept_header and "text/html" not in accept_header:
+        return JSONResponse({"status": "JanSahayak API chal raha hai", "total_chunks": len(documents)})
+    
+    index_file = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return JSONResponse({"status": "JanSahayak API chal raha hai", "total_chunks": len(documents)})
+
+
+@app.get("/health")
 def health_check():
     return {"status": "JanSahayak API chal raha hai", "total_chunks": len(documents)}
 
