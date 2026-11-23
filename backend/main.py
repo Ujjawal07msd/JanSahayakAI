@@ -30,7 +30,7 @@ from pydantic import BaseModel
 # ============================================================
 EMBEDDING_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 COLLECTION_NAME = "jansahayak_documents"
-GEMINI_MODEL_NAME = "gemini-3.5-flash-lite"
+GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "gemini-flash-lite-latest")
 
 SEMANTIC_WEIGHT = 0.5
 KEYWORD_WEIGHT = 0.5
