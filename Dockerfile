@@ -1,25 +1,31 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+# Create standard non-root user with UID 1000 (required for Hugging Face Spaces)
+RUN useradd -m -u 1000 user
 
 # Install system utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+USER user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH \
+    PORT=7860
 
-# Pre-download embedding model into image for instant cold-starts
+WORKDIR $HOME/app
+
+# Install python dependencies
+COPY --chown=user:user requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Pre-download embedding model into user cache for instant cold-starts
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')"
 
 # Copy application files
-COPY . .
+COPY --chown=user:user . .
 
-EXPOSE 8000
+EXPOSE 7860 8000
 
-ENV PORT=8000
-
-CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-7860}"]
 

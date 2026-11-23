@@ -1,3 +1,13 @@
+---
+title: JanSahayak AI
+emoji: 🏛️
+colorFrom: yellow
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # JanSahayak (जनसहायक) — Government Document Intelligence & Citizen Assistant
 
 JanSahayak is an AI-powered document intelligence and citizen assistance platform designed to make government schemes, circulars, and policies accessible, transparent, and understandable for citizens in both **Hindi** and **English**.
